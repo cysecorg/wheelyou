@@ -1,39 +1,37 @@
 workflows:
-  build_wheelyou:
-    name: Build Wheelyou
+  build_wheelyou_ios:
+    name: Build Wheelyou iOS
     environment:
-      flutter: "3.37.0-0.1.pre"   # cached Flutter dev channel with Dart 3.10
+      flutter: "3.37.0-0.1.pre"  # Flutter dev channel with Dart 3.10
       xcode: latest
       cocoapods: default
       android: stable
     scripts:
-      # Ensure we are on dev channel and upgraded
+      # 1. Switch to Flutter dev channel and upgrade
       - name: Switch to Flutter dev channel
         script: |
           flutter channel dev
-          flutter upgrade
+          flutter upgrade --force
 
-      # Install project dependencies
+      # 2. Install project dependencies
       - name: Install Flutter dependencies
-        script: |
-          flutter pub get
+        script: flutter pub get
 
-      # Optional: Analyze project
-      - name: Analyze project
-        script: |
-          flutter analyze
+      # 3. Clean previous builds (optional, recommended)
+      - name: Clean build
+        script: flutter clean
 
-      # Optional: Run tests
-      - name: Run tests
+      # 4. Run pod install for iOS
+      - name: Install iOS pods
         script: |
-          flutter test
+          cd ios
+          pod install
+          cd ..
 
-      # Build Android APK
-      - name: Build APK
-        script: |
-          flutter build apk --release
+      # 5. Build iOS IPA
+      - name: Build iOS IPA
+        script: flutter build ios --release --no-codesign
 
-      # Build iOS (if needed)
-      - name: Build iOS
-        script: |
-          flutter build ios --release
+      # 6. Export IPA with proper signing (Codemagic handles signing)
+      - name: Export IPA
+        script: flutter build ipa --export-options-plist ios/ExportOptions.plist
