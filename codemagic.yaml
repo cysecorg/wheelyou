@@ -2,37 +2,31 @@ workflows:
   build_wheelyou_ios:
     name: Build Wheelyou iOS
     environment:
-      flutter: "3.37.0-0.1.pre"   # Cached Flutter dev channel (Dart 3.10)
+      flutter: "3.37.0-0.1.pre"
       xcode: latest
       cocoapods: default
     scripts:
-      # 1️⃣ Switch to Flutter dev channel
       - name: Switch to Flutter dev channel
         script: |
           flutter channel dev
           flutter upgrade --force
           flutter --version
 
-      # 2️⃣ Install Flutter dependencies
       - name: Install dependencies
         script: flutter pub get
 
-      # 3️⃣ Clean previous builds
       - name: Clean build
         script: flutter clean
 
-      # 4️⃣ Install CocoaPods for iOS
       - name: Install iOS pods
         script: |
           cd ios
           pod install
           cd ..
 
-      # 5️⃣ Build iOS app (unsigned)
-      - name: Build iOS app
+      - name: Build iOS app (unsigned)
         script: flutter build ios --release --no-codesign
 
-      # 6️⃣ Build IPA
       - name: Export IPA
         script: flutter build ipa --export-options-plist ios/ExportOptions.plist
 
