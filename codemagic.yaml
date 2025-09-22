@@ -5,14 +5,17 @@ workflows:
       flutter: "3.37.0-0.1.pre"   # Cached Flutter dev channel (Dart 3.10)
       xcode: latest
       cocoapods: default
-  - name: Switch to Flutter dev channel
-    script: |
-      flutter channel dev
-      flutter upgrade --force
-      flutter --version
+    scripts:
+      # 1️⃣ Switch to Flutter dev channel
+      - name: Switch to Flutter dev channel
+        script: |
+          flutter channel dev
+          flutter upgrade --force
+          flutter --version
 
-  - name: Install dependencies
-    script: flutter pub get
+      # 2️⃣ Install Flutter dependencies
+      - name: Install dependencies
+        script: flutter pub get
 
       # 3️⃣ Clean previous builds
       - name: Clean build
@@ -29,7 +32,7 @@ workflows:
       - name: Build iOS app
         script: flutter build ios --release --no-codesign
 
-      # 6️⃣ Build IPA (Codemagic handles signing if configured)
+      # 6️⃣ Build IPA
       - name: Export IPA
         script: flutter build ipa --export-options-plist ios/ExportOptions.plist
 
