@@ -2,27 +2,38 @@ workflows:
   build_wheelyou:
     name: Build Wheelyou
     environment:
-      flutter: "3.37.0-0.1.pre" # Flutter dev channel with Dart 3.10
+      flutter: "3.37.0-0.1.pre"   # cached Flutter dev channel with Dart 3.10
       xcode: latest
       cocoapods: default
       android: stable
     scripts:
+      # Ensure we are on dev channel and upgraded
       - name: Switch to Flutter dev channel
         script: |
           flutter channel dev
           flutter upgrade
+
+      # Install project dependencies
       - name: Install Flutter dependencies
         script: |
           flutter pub get
+
+      # Optional: Analyze project
       - name: Analyze project
         script: |
           flutter analyze
+
+      # Optional: Run tests
       - name: Run tests
         script: |
           flutter test
+
+      # Build Android APK
       - name: Build APK
         script: |
           flutter build apk --release
+
+      # Build iOS (if needed)
       - name: Build iOS
         script: |
           flutter build ios --release
