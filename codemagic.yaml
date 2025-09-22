@@ -5,7 +5,6 @@ workflows:
       flutter: "3.37.0-0.1.pre"   # Cached Flutter dev channel (Dart 3.10)
       xcode: latest
       cocoapods: default
-      android: stable   # not used, only for completeness
     scripts:
       # 1️⃣ Ensure correct Flutter channel and Dart version
       - name: Switch to Flutter dev channel
@@ -29,11 +28,11 @@ workflows:
           pod install
           cd ..
 
-      # 5️⃣ Build iOS app (unsinged)
+      # 5️⃣ Build iOS app (unsigned)
       - name: Build iOS app
         script: flutter build ios --release --no-codesign
 
-      # 6️⃣ Build IPA (Codemagic can handle signing if configured)
+      # 6️⃣ Build IPA (Codemagic handles signing if configured)
       - name: Export IPA
         script: flutter build ipa --export-options-plist ios/ExportOptions.plist
 
