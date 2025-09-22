@@ -30,14 +30,24 @@ workflows:
 
       # 5️⃣ Build Xcode archive without code signing
       - name: Build Xcode archive
-        script: flutter build ios --no-codesign
+        script: |
+          flutter build ios --release --no-codesign \
+            --no-simulator \
+            --build-name=1.0.0 \
+            --build-number=1
+          
+          cd ios
+          xcodebuild -scheme Runner \
+            -archivePath build/Runner.xcarchive \
+            archive
+          cd ..
 
       # 6️⃣ Export unsigned IPA from the archive
       - name: Export unsigned IPA
         script: |
           cd ios
           xcodebuild -exportArchive \
-            -archivePath build/archive/Runner.xcarchive \
+            -archivePath build/Runner.xcarchive \
             -exportPath build/ios/ipa \
             -exportOptionsPlist ExportOptions.plist
           cd ..
