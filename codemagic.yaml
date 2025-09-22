@@ -5,17 +5,15 @@ workflows:
       flutter: "3.37.0-0.1.pre"   # Cached Flutter dev channel (Dart 3.10)
       xcode: latest
       cocoapods: default
-    scripts:
-      # 1️⃣ Ensure correct Flutter channel and Dart version
-      - name: Switch to Flutter dev channel
-        script: |
-          flutter channel dev
-          flutter upgrade --force
-          flutter --version
+    sscripts:
+  - name: Switch to Flutter dev channel
+    script: |
+      flutter channel dev
+      flutter upgrade --force
+      flutter --version
 
-      # 2️⃣ Install Flutter dependencies
-      - name: Install dependencies
-        script: flutter pub get
+  - name: Install dependencies
+    script: flutter pub get
 
       # 3️⃣ Clean previous builds
       - name: Clean build
