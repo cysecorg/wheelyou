@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AuthContainer extends StatelessWidget {
-  final Widget child;
+  const AuthContainer({
+    super.key,
+    required this.child,
+  });
 
-  const AuthContainer({Key? key, required this.child}) : super(key: key);
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,7 @@ class AuthContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withAlpha(25), // Fix: .withAlpha(25) instead of .withOpacity(0.1)
             blurRadius: 10,
             spreadRadius: 3,
           ),

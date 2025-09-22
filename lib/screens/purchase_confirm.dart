@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
 class PurchaseConfirmationScreen extends StatelessWidget {
-  final String vehicleTitle;
-  final String customerName;
-  final String customerEmail;
-  final int price;
-
   const PurchaseConfirmationScreen({
+    super.key,
     required this.vehicleTitle,
     required this.customerName,
     required this.customerEmail,
     required this.price,
   });
+
+  final String vehicleTitle;
+  final String customerName;
+  final String customerEmail;
+  final int price;
 
   @override
   Widget build(BuildContext context) {
