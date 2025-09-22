@@ -1,6 +1,6 @@
 workflows:
   build_wheelyou_ios:
-    name: Build Wheelyou iOS
+    name: Build Wheelyou iOS (Unsigned)
     environment:
       flutter: "stable"      # Use Flutter stable channel
       xcode: latest
@@ -28,13 +28,9 @@ workflows:
           pod install
           cd ..
 
-      # 5️⃣ Build iOS app (unsigned)
-      - name: Build iOS app
-        script: flutter build ios --release --no-codesign
-
-      # 6️⃣ Build IPA (Codemagic handles signing if configured)
-      - name: Export IPA
-        script: flutter build ipa --export-options-plist ios/ExportOptions.plist
+      # 5️⃣ Build unsigned iOS app
+      - name: Build unsigned IPA
+        script: flutter build ipa --no-codesign
 
 artifacts:
   - build/ios/ipa/*.ipa
