@@ -2,31 +2,37 @@ workflows:
   build_wheelyou_ios:
     name: Build Wheelyou iOS
     environment:
-      flutter: "3.37.0-0.1.pre"
+      flutter: "stable"      # Use Flutter stable channel
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Switch to Flutter dev channel
+      # 1️⃣ Ensure Flutter stable
+      - name: Switch to Flutter stable channel
         script: |
-          flutter channel dev
+          flutter channel stable
           flutter upgrade --force
           flutter --version
 
+      # 2️⃣ Install dependencies
       - name: Install dependencies
         script: flutter pub get
 
+      # 3️⃣ Clean previous builds
       - name: Clean build
         script: flutter clean
 
+      # 4️⃣ Install CocoaPods for iOS
       - name: Install iOS pods
         script: |
           cd ios
           pod install
           cd ..
 
-      - name: Build iOS app (unsigned)
+      # 5️⃣ Build iOS app (unsigned)
+      - name: Build iOS app
         script: flutter build ios --release --no-codesign
 
+      # 6️⃣ Build IPA (Codemagic handles signing if configured)
       - name: Export IPA
         script: flutter build ipa --export-options-plist ios/ExportOptions.plist
 
