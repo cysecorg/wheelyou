@@ -20,7 +20,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   bool _isLoading = false;
 
   // Replace with your API base URL
-  static const String apiBaseUrl = 'http://192.168.30.10:8081';
+  static const String apiBaseUrl = 'http://16.171.62.76:8081';
 
   Future<void> verifyOTP() async {
     if (!_formKey.currentState!.validate()) return;
