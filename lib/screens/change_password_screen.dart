@@ -36,7 +36,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       _apiMessage = null;
     });
 
-    final url = Uri.parse("http://192.168.30.10:8081/api/change-password");
+    final url = Uri.parse("http://16.171.62.76:8081/api/change-password");
 
     final response = await http.post(
       url,
