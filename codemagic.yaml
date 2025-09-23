@@ -7,7 +7,7 @@ workflows:
       cocoapods: default
 
     scripts:
-      # 1️⃣ Ensure Flutter stable channel
+      # 1️⃣ Switch to Flutter stable
       - name: Switch to Flutter stable channel
         script: |
           flutter channel stable
@@ -22,7 +22,7 @@ workflows:
       - name: Clean build
         script: flutter clean
 
-      # 4️⃣ Generate iOS configs
+      # 4️⃣ Generate iOS configs (if needed)
       - name: Generate iOS configs
         script: flutter pub run build_runner build || true
 
@@ -33,26 +33,11 @@ workflows:
           pod install --repo-update
           cd ..
 
-      # 6️⃣ Build archive
-      - name: Build Xcode archive
+      # 6️⃣ Build unsigned IPA using Flutter's built-in command
+      - name: Build unsigned IPA
         script: |
-          flutter build ios --release --no-codesign \
+          flutter build ipa --release --no-codesign \
             --build-name=1.0.0 --build-number=1
-
-          xcodebuild archive \
-            -workspace ios/Runner.xcworkspace \
-            -scheme Runner \
-            -configuration Release \
-            -archivePath ios/build/Runner.xcarchive \
-            CODE_SIGNING_ALLOWED=NO
-
-      # 7️⃣ Export unsigned IPA
-      - name: Export unsigned IPA
-        script: |
-          xcodebuild -exportArchive \
-            -archivePath ios/build/Runner.xcarchive \
-            -exportOptionsPlist ios/ExportOptions.plist \
-            -exportPath build/ios/ipa
 
     artifacts:
       - build/ios/ipa/*.ipa
