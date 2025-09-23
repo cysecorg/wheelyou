@@ -7,61 +7,23 @@ workflows:
       cocoapods: default
 
     scripts:
-      # 1️⃣ Switch to Flutter stable
-      - name: Switch to Flutter stable channel
+      - name: Build App and Create IPA
         script: |
-          flutter channel stable
-          flutter upgrade --force
-          flutter --version
-
-      # 2️⃣ Update Bundle Identifier to wheelyou.mobile.app
-      - name: Update Bundle Identifier
-        script: |
+          # Update bundle identifier
           cd ios
-          
-          # Update Info.plist
           plutil -replace CFBundleIdentifier -string "wheelyou.mobile.app" Runner/Info.plist
-          
-          # Update Debug.xcconfig
-          sed -i.bak 's/PRODUCT_BUNDLE_IDENTIFIER = .*/PRODUCT_BUNDLE_IDENTIFIER = wheelyou.mobile.app/' Flutter/Debug.xcconfig
-          
-          # Update Release.xcconfig  
-          sed -i.bak 's/PRODUCT_BUNDLE_IDENTIFIER = .*/PRODUCT_BUNDLE_IDENTIFIER = wheelyou.mobile.app/' Flutter/Release.xcconfig
-          
-          # Verify changes
-          echo "Updated Bundle Identifier:"
-          plutil -extract CFBundleIdentifier xml1 -o - Runner/Info.plist
-          echo "Debug config:"
-          grep PRODUCT_BUNDLE_IDENTIFIER Flutter/Debug.xcconfig
-          echo "Release config:"
-          grep PRODUCT_BUNDLE_IDENTIFIER Flutter/Release.xcconfig
-          
           cd ..
-
-      # 3️⃣ Install dependencies
-      - name: Install dependencies
-        script: flutter pub get
-
-      # 4️⃣ Clean previous builds
-      - name: Clean build
-        script: flutter clean
-
-      # 5️⃣ Generate iOS configs (if needed)
-      - name: Generate iOS configs
-        script: flutter pub run build_runner build || true
-
-      # 6️⃣ Install CocoaPods
-      - name: Install iOS pods
-        script: |
-          cd ios
-          pod install --repo-update
-          cd ..
-
-      # 7️⃣ Build unsigned IPA
-      - name: Build unsigned IPA
-        script: |
-          flutter build ipa --release --no-codesign \
-            --build-name=1.0.0 --build-number=1
+          
+          # Build the iOS app
+          flutter build ios --release --no-codesign
+          
+          # Create IPA manually from the .app file
+          mkdir -p build/ios/ipa/Payload
+          cp -r build/ios/Release-iphoneos/Runner.app build/ios/ipa/Payload/
+          cd build/ios/ipa
+          zip -r Wheelyou_Unsigned.ipa Payload
+          ls -la
+          cd ../../..
 
     artifacts:
       - build/ios/ipa/*.ipa
