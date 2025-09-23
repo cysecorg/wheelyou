@@ -28,28 +28,30 @@ workflows:
           pod install
           cd ..
 
-      # 5️⃣ Build Xcode archive without code signing
+      # 5️⃣ Build Xcode archive without signing
       - name: Build Xcode archive
         script: |
-          flutter build ios --release --no-codesign \
-            --no-simulator \
-            --build-name=1.0.0 \
-            --build-number=1
-          
-          cd ios
-          xcodebuild -scheme Runner \
+          xcodebuild -workspace ios/Runner.xcworkspace \
+            -scheme Runner \
+            -sdk iphoneos \
+            -configuration Release \
             -archivePath build/Runner.xcarchive \
-            archive
-          cd ..
+            archive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
 
-      # 6️⃣ Export unsigned IPA from the archive
+      # 6️⃣ Export unsigned IPA
       - name: Export unsigned IPA
         script: |
           cd ios
           xcodebuild -exportArchive \
-            -archivePath build/Runner.xcarchive \
-            -exportPath build/ios/ipa \
-            -exportOptionsPlist ExportOptions.plist
+            -archivePath ../build/Runner.xcarchive \
+            -exportPath ../build/ios/ipa \
+            -exportOptionsPlist ExportOptions.plist \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
           cd ..
 
 artifacts:
