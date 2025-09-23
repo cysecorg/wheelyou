@@ -19,7 +19,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool _loading = true;
 
   void fetchVehicles() async {
-    var url = Uri.parse('http://192.168.30.10:8081/api/vehicles');
+    var url = Uri.parse('http://16.171.62.76:8081/api/vehicles');
     var response = await http.get(url);
     var res = json.decode(response.body);
     setState(() {
