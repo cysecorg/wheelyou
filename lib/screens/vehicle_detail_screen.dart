@@ -23,7 +23,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
   }
 
   void fetchVehicleDetail() async {
-    final url = Uri.parse('http://192.168.30.10:8081/api/vehicle/${widget.vehicleId}');
+    final url = Uri.parse('http://16.171.62.76:8081/api/vehicle/${widget.vehicleId}');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
