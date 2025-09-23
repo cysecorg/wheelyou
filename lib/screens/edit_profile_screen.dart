@@ -50,7 +50,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _apiMessage = null;
     });
 
-    final url = Uri.parse('http://192.168.30.10:8081/api/profile/${widget.userId}');
+    final url = Uri.parse('http://16.171.62.76:8081/api/profile/${widget.userId}');
     final resp = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
