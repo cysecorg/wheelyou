@@ -38,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _error = null;
     });
 
-    final url = Uri.parse('http://192.168.30.10:8081/api/profile/${widget.userId}');
+    final url = Uri.parse('http://16.171.62.76:8081/api/profile/${widget.userId}');
 
     try {
       final response = await http.get(url);
