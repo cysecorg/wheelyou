@@ -40,7 +40,7 @@ class _BuyScreenState extends State<BuyScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.30.10:8081/api/confirm-purchase'),
+        Uri.parse('http://16.171.62.76:8081/api/confirm-purchase'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           "name": _nameCtrl.text.trim(),
